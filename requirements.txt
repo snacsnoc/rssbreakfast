@@ -1,0 +1,8 @@
+Flask
+gunicorn
+requests
+Werkzeug
+feedparser
+mistune
+python-dateutil
+pytz

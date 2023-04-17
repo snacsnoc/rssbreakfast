@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>RSS Feed Summarizer To Markdown</title>
+    <style>
+                body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ff6600;
+            padding: 1rem;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 1rem;
+            border: 1px solid #ccc;
+            padding: 2rem;
+            border-radius: 5px;
+        }
+
+        form input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        form h3 {
+            grid-column: 1 / 5;
+            font-size: 1.25rem;
+        }
+
+        form input[type="submit"] {
+            grid-column: 1 / 5;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #ff7a33;
+        }
+
+        #result {
+            margin-top: 2rem;
+        }
+
+        #markdown-content {
+            width: 100%;
+            resize: none;
+        }
+
+        #download-button {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #download-button:hover {
+            background-color: #ff7a33;
+        }
+                .checkbox-container {
+            display: flex;
+            align-items: center;
+            height: 35px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        .checkbox-container label {
+            margin: 0;
+        }
+label.disabled {
+    color: #ccc;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+<header>
+    <h1>RSS Feed Summarizer To Markdown</h1>
+    <p>An easy-to-use tool for summarizing and converting RSS feeds to Markdown format, perfect for distributing news,
+        reading RSS feeds, or importing into Notion.</p>
+</header>
+<main>
+    <form action="/generate" method="post" id="feeds-form">
+        <h3>Select feeds:</h3>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="shopify" value="https://shopify.dev/changelog/feed.xml">
+            <label for="shopify">Shopify</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="recharge" value="https://changelog.rechargepayments.com/rss.xml">
+            <label for="recharge">Recharge</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="github-products" value="https://github.blog/category/product/feed/">
+            <label for="github-products">Github Products</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="gorgias" value="https://updates.gorgias.com/feed.rss"> <label
+                for="gorgias">Gorgias</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="paypal" value="https://www.paypal-notify.com/eventnotification/feed">
+            <label
+                    for="paypal">Paypal</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="stripe-changelog" value="https://stripe.com/changelog.atom" disabled>
+            <label for="stripe-changelog" class="disabled">Stripe Changelog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="square-developer-blog"
+                   value="https://developer.squareup.com/blog/rss.xml" disabled>
+            <label for="square-developer-blog" class="disabled">Square Developer Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="braintree-release-notes"
+                   value="https://www.braintreepayments.com/blog/rss/" disabled>
+            <label for="braintree-release-notes" class="disabled">Braintree Release Notes</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="klaviyo-release-notes"
+                   value="https://www.klaviyo.com/blog/category/product-updates/feed" disabled>
+            <label for="klaviyo-release-notes" class="disabled">Klaviyo Release Notes</label>
+        </div>
+
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="stack-overflow-blog" value="https://stackoverflow.blog/feed/">
+            <label for="stack-overflow-blog">Stack Overflow Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="mozilla-hacks" value="https://hacks.mozilla.org/feed/">
+            <label for="mozilla-hacks">Mozilla Hacks</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="stripe-blog" value="https://stripe.com/blog/feed.rss">
+            <label for="stripe-blog">Stripe Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="paypal-tech-blog" value="https://medium.com/feed/paypal-engineering">
+            <label for="paypal-tech-blog">Paypal Tech Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="css-tricks" value="https://css-tricks.com/feed/">
+            <label for="css-tricks">CSS-Tricks</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="microsoft-developer-blogs"
+                   value="https://devblogs.microsoft.com/feed/">
+            <label for="microsoft-developer-blogs">Microsoft Developer Blogs</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="aws-news-blog" value="https://aws.amazon.com/blogs/aws/feed/">
+            <label for="aws-news-blog">AWS News Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="google-developers-blog"
+                   value="https://developers.googleblog.com/feeds/posts/default">
+            <label for="google-developers-blog">Google Developers Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="github-blog" value="https://github.blog/feed/">
+            <label for="github-blog">The GitHub Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="netflix-tech-blog" value="https://netflixtechblog.com/feed">
+            <label for="netflix-tech-blog">The Netflix Tech Blog</label>
+        </div>
+        <div class="checkbox-container">
+            <input name="feed" type="checkbox" id="slack-engineering-blog" value="https://slack.engineering/feed">
+            <label for="slack-engineering-blog">The Slack Engineering Blog</label>
+        </div>
+
+
+        <h3>Select date range:</h3>
+        <input name="daterange" type="text" value="2023-01-01 - 2023-01-31">
+
+        <input type="submit" name="action" value="Generate Markdown"></form>
+    <div id="result">
+        <h3>Generated Markdown:</h3>
+        <textarea id="markdown-content" rows="10" cols="80"></textarea>
+
+        <button id="download-button" onclick="downloadMarkdown()">Download Markdown</button>
+    </div>
+</main>
+<script>
+
+    document.getElementById("feeds-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        submitForm();
+    });
+
+    function downloadMarkdown() {
+        const content = document.getElementById("markdown-content").value;
+        const fileName = "generated_markdown.md";
+        const file = new Blob([content], { type: "text/plain" });
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(file);
+        downloadLink.download = fileName;
+        downloadLink.click();
+    }
+
+    async function submitForm() {
+        const formData = new FormData(document.getElementById("feeds-form"));
+        const response = await fetch("/generate", {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.ok) {
+            const markdownContent = await response.text();
+            document.getElementById("markdown-content").value = markdownContent;
+            document.getElementById("result").style.display = "block";
+        } else {
+            console.error("Error generating Markdown content:", response.statusText);
+        }
+    }
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
+
+
